@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <title>
+      API Docs
+    </title>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 15px;
+        font-family: Arial;
+      }
+      h1 {
+        display: inline;
+        font-family: Arial;
+        opacity: .85;
+        text-decoration: underline;
+      }
+      h2 { opacity: .7; }
+      code { background-color: #EEEEEE; }
+      div { overflow: hidden; margin: 5px; }
+      li {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2> Welcome to the API. </h3>
+    <h5>
+      Feel free to reference the <a href="/test.js">test file</a> for more detailed usage examples.
+    </h5>
+
+    <h4>Endpoints</h4>
+    <div>
+      <code> /user/:id </code> <br>
+      <ul>
+        <li> <b> Verbs:</b>
+          DELETE, POST, GET <br>
+        </li>
+        <li> <b> Body:</b>
+          No body expected.
+        </li>
+        <li> <b> Response: </b>
+          <br>
+          Responds with a 404 if user does not exist.
+          <br>
+          Responds with a 200 and an object with the following shape otherwise:
+          <br>
+          <code>
+            {
+              id: '',
+              favorites: [],
+              settings: {}
+            }
+          </code>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <code> /user/:id/settings/ </code> <br>
+      <ul>
+        <li> <b>Verbs:</b>
+          PATCH <br>
+        </li>
+        <li> <b>Body:</b>
+          <code>
+            { operation: 'update' | 'remove', payload: {} }
+          </code>
+          <br>
+          <br>
+          Requests sent with an 'update' operation are merged with the existing data.
+          <br>
+          <code>
+          {
+            operation: 'update',
+            payload: {
+              resultCount: 25
+            }
+          }
+          </code>
+          <br>
+          The above would add a `resultCount` property to the settings object for the given user.
+          <br>
+          <br>
+          Requests sent with a 'remove' operation delete the specified top level setting keys.
+
+          <br>
+          <code>
+          {
+            operation: 'remove',
+            payload: {
+              resultCount: true
+            }
+          }
+          </code> <br>
+          The above, would delete the `resultCount` property:
+        </li>
+        <li> <b>Response: </b>
+          <br>
+          Responds with a 404 if user does not exist.
+          <br>
+          Responds with a 200 otherwise <br>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <code> /user/:id/favorites </code> <br>
+      <ul>
+        <li> <b>Verbs:</b>
+          PATCH <br>
+        </li>
+        <li> <b>Body:</b>
+          <code>
+            { operation: 'add' | 'remove', values: [] }
+          </code>
+          <br>
+          Add requests will add the provided value(s) to the `favorites` array.
+          <br>
+          Remove requests will remove any favorites that are equivalent to provided value(s).
+          <br>
+          <br>
+          Note: the add operation will not create duplicates so the following body will not be problematic.
+          <br>
+          <code> {
+              operation: 'add',
+              values: [
+                'test1',
+                'test1',
+                'test2',
+                { testing: '123' },
+                { testing: '123' }
+              ]
+            }
+          </code>
+        </li>
+        <li> <b>Responses</b>
+          <br>
+          Responds with a 404 if user does not exist.
+          <br>
+          Responds with a 200 otherwise.
+          <br>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
